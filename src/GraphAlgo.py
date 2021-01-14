@@ -75,18 +75,18 @@ class GraphAlgo(GraphAlgoInterface):
     def load_from_json(self, file_name: str) -> bool:
 
         try:
-            new_graph = DiGraph()  # creating a new DiGraph
-            with open(file_name, 'r') as reader:  # reading from a file in 'r' mode
+            new_graph = DiGraph()
+            with open(file_name, 'r') as reader:
                 json_graph = Js.load(reader)
                 reader.close()
-                edges = json_graph["Edges"]  # accessing the position of the key "Edges" being a list
-                nodes = json_graph["Nodes"]  # accessing the position of the key "Nodes" being a list of node objects
+                edges = json_graph["Edges"]
+                nodes = json_graph["Nodes"]
                 for x in nodes:
                     pos = None
-                    if 'pos' in x:  # if the value of x contains a key for 'pos'
-                        posString = x["pos"].split(",")  # splitting the string of pos
-                        pos = (float(posString[0]), float(posString[1]), float(posString[2]))  # assigning the information on the string into a pos tuple
-                    new_graph.add_node(int(x["id"]), pos)  # adding the node to the graph with the given value of 'id' and the pos
+                    if 'pos' in x:
+                        posString = x["pos"].split(",")
+                        pos = (float(posString[0]), float(posString[1]), float(posString[2]))
+                    new_graph.add_node(int(x["id"]), pos)
                 for x in edges:
                     new_graph.add_edge(int(x["src"]), int(x["dest"]), float(x["w"])) # adding the edges
                 self.g = new_graph
@@ -126,50 +126,50 @@ class GraphAlgo(GraphAlgoInterface):
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
 
-        if self.g is None:  # in case the graph is none
-            return (-1,[])  # returns a tuple with -1 and empty list.
-        if id1 in self.g.get_v_keys() and id1 == id2: # if id1=id2 the result is a tuple with 0 and a list containing
+        if self.g is None:
+            return (-1,[])
+        if id1 in self.g.get_v_keys() and id1 == id2:
             # only the node id
             my_tuple = (0, [self.g.get_all_v()[id1].getKey()])
             return my_tuple
-        if id1 not in self.g.get_all_v().keys() or id2 not in self.g.get_all_v().keys():  # if one of the given ids doesn't exist in the graph dictionary
+        if id1 not in self.g.get_all_v().keys() or id2 not in self.g.get_all_v().keys():
             my_tuple = (-1, [])
             return my_tuple
-        queue = [id1]  # if neither of the above cases happened adds id1 to a queue
-        self.setAllWeightAndInfo(-1)  # resets all nodes weight and info to -1
-        self.g.get_all_v()[id1].setWeight(0)  # sets the weight of id1 to 0
+        queue = [id1]
+        self.setAllWeightAndInfo(-1)
+        self.g.get_all_v()[id1].setWeight(0)
         info = "{}".format(id1)
         self.g.get_all_v()[id1].setInfo(info)
-        while queue:  # while the queue isn't empty
-            node = queue.pop(0)  # pops the first item in the queue
-            for x in self.g.all_out_edges_of_node(node).keys():  # iterating over node neighbours
+        while queue:
+            node = queue.pop(0)
+            for x in self.g.all_out_edges_of_node(node).keys():
                 if self.g.get_all_v()[x].getWeight() == -1 or self.g.get_all_v()[x].getWeight() > self.g.get_all_v()[
                     node].getWeight() + self.g.all_out_edges_of_node(node)[x]:
                     self.g.get_all_v()[x].setWeight(
-                        self.g.get_all_v()[node].getWeight() + self.g.all_out_edges_of_node(node)[x]) # updating the current vertex and its predecessor weight.
+                        self.g.get_all_v()[node].getWeight() + self.g.all_out_edges_of_node(node)[x])
                     queue.append(x)
-                    info = "{},{}".format(self.g.get_all_v()[node].getInfo(), x)  # formating the info of the current vertex x
+                    info = "{},{}".format(self.g.get_all_v()[node].getInfo(), x)
                     self.g.get_all_v()[x].setInfo(info)
-        if self.g.get_all_v()[id2].getWeight() == -1:  # if we didn't visit that node yet
-            my_tuple = (math.inf, [])  # we return a tuple with the distance of infinity and an empty list.
+        if self.g.get_all_v()[id2].getWeight() == -1:
+            my_tuple = (math.inf, [])
             return my_tuple
         else:  # there's a path
             my_list = []
-            for x in self.g.get_all_v()[id2].getInfo().split(','):  # iterating over the array of the info string after splitting it
+            for x in self.g.get_all_v()[id2].getInfo().split(','):
                 my_list.append(int(x))
-            my_tuple = (self.g.get_all_v()[id2].getWeight(), my_list) # a tuple with the weight of id2 and the list containing the path.
+            my_tuple = (self.g.get_all_v()[id2].getWeight(), my_list)
             return my_tuple
 
     def connected_component(self, id1: int) -> list:
 
         if self.g is None or id1 not in self.g.get_all_v():
             return []
-        my_list = self.connected_components()  # defining my_list as a list to hold all the lists of SCC in the graph.
+        my_list = self.connected_components()
         if my_list:
-            for x in my_list:  # iterating over the list
-                if id1 in x:  # in case the desired id exist in x (list)
-                    return x  # returns the list containing id1 in the SCC
-        return []  # in case id1 wasn't found in neither of the lists returns an empty list.
+            for x in my_list:
+                if id1 in x:
+                    return x
+        return []
 
     def connected_components(self) -> List[list]:
 
@@ -181,26 +181,26 @@ class GraphAlgo(GraphAlgoInterface):
             my_list = []
             i = 0
             keys = self.g.get_all_v().keys()
-            for id in keys:  # iterates over the vertices IDs'
-                if id not in f:  # in case the current id doesn't exist in the dictionary of known SCC
+            for id in keys:
+                if id not in f:
                     queue = [id]
-                    while len(queue) > 0:  # while the queue isn't empty
+                    while len(queue) > 0:
                         vertex = queue[-1]
-                        if vertex not in p:  # in case the current id doesn't exist in the dictionary of p
+                        if vertex not in p:
                             i = i + 1
                             p[vertex] = i
                         done = 1
                         niById = self.g.all_out_edges_of_node(vertex)
-                        for w in niById:  # iteration over the neighbors of the current vertex
-                            if w not in p:  # in case the current id doesn't exist in the dictionary of q
+                        for w in niById:
+                            if w not in p:
                                 queue.append(w)
                                 done = 0
                                 break
                         if done == 1:
                             l[vertex] = p[vertex]
-                            for w in niById:  # iteration over the neighbors of the current vertex
+                            for w in niById:
                                 if w not in f:
-                                    if p[w] <= p[vertex]:  # comparing between the weight of vertices
+                                    if p[w] <= p[vertex]:
                                         l[vertex] = min([l[vertex], p[w]])
                                     else:
                                         l[vertex] = min([l[vertex], l[w]])
@@ -208,15 +208,13 @@ class GraphAlgo(GraphAlgoInterface):
                             if l[vertex] != p[vertex]:
                                 my_list.append(vertex)
                             else:
-                                f[vertex] = True  # marking the vertex as true being a part of the SCC
+                                f[vertex] = True
                                 scc = [vertex]
-                                while my_list and p[my_list[-1]] > p[vertex]:  # iterating over the list while it's
-                                    # not empty & the last value in p larger than p[vertex] adds the vertices to the
-                                    # SCC dictionary
+                                while my_list and p[my_list[-1]] > p[vertex]:
                                     k = my_list.pop()
                                     f[k] = True
                                     scc.append(k)
-                                result.append(scc)  # adds the list of SCC to the result list.
+                                result.append(scc)
             self.components = result
             return result
 
@@ -257,8 +255,8 @@ class GraphAlgo(GraphAlgoInterface):
 
     def splitPos(self, pos: str) -> list:
         if pos == "":
-            x = float((r.random() * 5) + 2)
-            y = float((r.random() * 5) + 2)
+            x = float((r.random() * 10) + 4)
+            y = float((r.random() * 10) + 4)
             return [x, y]
         else:
             x = float(pos.split(",")[0])
