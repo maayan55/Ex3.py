@@ -13,15 +13,11 @@ class GraphAlgo(GraphAlgoInterface):
     def __init__(self, graph=None):
 
         self.tags = {}
-        self.visited = 1
-        self.not_visited = 0
         self.g = None if graph is None else graph
         self.mc = 0 if graph is None else graph.get_mc()
         self.nodeSize = 0 if graph is None else graph.v_size()
         self.edgeSize = 0 if graph is None else graph.e_size()
         self.transposed_graph = None if graph is None else self.createTransposedGraph(graph)
-        self.positive_infnity = float('inf')
-        self.negative_infnity = float('-inf')
 
     def createTransposedGraph(self, graph) -> DiGraph:
 
