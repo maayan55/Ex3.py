@@ -42,10 +42,6 @@ class GraphAlgo(GraphAlgoInterface):
         return self.tags
 
     def setAllWeightAndInfo(self, t: float):
-        """
-        Sets the weight and info of all vertices in the graph to 't' and and empty string.
-        :param t: the weight to set.
-        """
         if self.g is None:
             return
         for x in self.g.get_all_values():
@@ -59,9 +55,7 @@ class GraphAlgo(GraphAlgoInterface):
             print(x)
 
     def get_graph(self) -> GraphInterface:
-        """
-        :return: the directed graph on which the algorithm works on.
-        """
+
         if self.g is None:
             return None
         return self.g
@@ -119,7 +113,6 @@ class GraphAlgo(GraphAlgoInterface):
                 writer.write(Js.dumps(my_dict))
                 return True
         except:
-            # raise FileExistsError
             return False
         finally:
             writer.close()
@@ -218,13 +211,23 @@ class GraphAlgo(GraphAlgoInterface):
             self.components = result
             return result
 
+    def splitPos(self, pos: str) -> list:
+            if pos == "":
+                x = float((r.random() * 10) + 4)
+                y = float((r.random() * 10) + 4)
+                return [x, y]
+            else:
+                x = float(pos.split(",")[0])
+                y = float(pos.split(",")[1])
+                return [x, y]
+
     def plot_graph(self) -> None:
 
         list_X = []
         list_Y = []
         for x in self.g.get_all_v().keys():
             for e in self.g.all_out_edges_of_node(x).keys():
-                # print(self.g.get_all_v()[x].getPosAsString())
+
                 listOfVector = self.splitPos(self.g.get_all_v()[x].getPosAsString())
                 if listOfVector is not None:
                     list_X.append(listOfVector[0])
@@ -235,7 +238,7 @@ class GraphAlgo(GraphAlgoInterface):
                     list_X.append(listOfEdgesByX[0])
                     list_Y.append(listOfEdgesByX[1])
 
-                plt.plot(list_X, list_Y, "*-b")
+                plt.plot(list_X, list_Y, "*-r")
         plt.xlabel('x')
         plt.ylabel('y')
         plt.show()
@@ -243,14 +246,14 @@ class GraphAlgo(GraphAlgoInterface):
 
     def checkValue(self, checkList) -> list:
         if checkList[0] < 0:
-            checkList[0] += 0.04
+            checkList[0] += 0.02
         else:
-            checkList[0] -= 0.04
+            checkList[0] -= 0.02
 
         if checkList[1] < 0:
-            checkList[1] += 0.04
+            checkList[1] += 0.02
         else:
-            checkList[1] -= 0.04
+            checkList[1] -= 0.02
         return checkList
 
     def splitPos(self, pos: str) -> list:
