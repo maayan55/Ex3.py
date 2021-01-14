@@ -1,5 +1,5 @@
 # Ex3
-
+חשוב לי לציין למען היושרה וההגינות שהתקשיתי ונעזרתי בקודים שראיתי באינטרנט
 *This project implements algorithms in Python for developing a data structure into a directional weighted graph.
 The graph contains vertices and weighted edges between each 2 vertices.
 
@@ -31,10 +31,10 @@ get_graph()	Returns the DiGraph which the algorithms are operated on.
 get_transposed_graph()	Returns the transposed Digraph.
 load_from_json()	Loads a DiGraph from a json file format.
 save_to_json()	Saves a DiGraph to a json file format.
+splitPos()	Splits the string received from a json file to the pos of the Node.
 shortest_path()	Finds the shortest path between two given node id.
 connected_component()	Returns a List representing the SCC related to a given vertex.
 connected_components()	Returns a List of lists containing all the SCC of the given graph.
-splitPos()	Splits the string received from a json file to the pos of the Node.
 plot_graph()	Display the graph in a graphics window.
 
 
