@@ -1,6 +1,7 @@
 # Ex3
 חשוב לי לציין למען היושרה וההגינות שהתקשיתי ונעזרתי בקודים שראיתי באינטרנט
 
+maayan- maayan.fo@gmail.com
 *This project implements algorithms in Python for developing a data structure into a directional weighted graph.
 The graph contains vertices and weighted edges between each 2 vertices.
 
